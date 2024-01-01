@@ -2,8 +2,8 @@
 *.pyc
 
 # Ignore virtual environment folders
-myvenv/
-env/
+myvenv
+env
 
 # Ignore log files
 *.log
