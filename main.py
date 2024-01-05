@@ -1,31 +1,27 @@
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
-import random
+from itertools import permutations, product
 
-class Math24App(App):
+class Math24Solver(App):
     def build(self):
-        layout = GridLayout(cols=6, spacing=10)
-        
-        # Generate 30 buttons
-        for i in range(30):
-            btn = Button(text=str(i + 1))
-            btn.bind(on_press=self.get_random_callback())
-            layout.add_widget(btn)
-        
+        self.numbers_input = []
+        self.solution_label = Label(text="Enter 4 numbers and press 'Solve' to find a solution for 24.")
+
+        layout = GridLayout(cols=3)
+        layout.add_widget(self.solution_label)
+
+        for i in range(4):
+            number_input = TextInput(hint_text='Number')
+            self.numbers_input.append(number_input)
+            layout.add_widget(number_input)
+
+        solve_button = Button(text='Solve')
+        layout.add_widget(solve_button)
+
         return layout
 
-    def get_random_callback(self):
-        callbacks = [self.callback1, self.callback2, self.callback3, self.callback4, 
-                     self.callback5, self.callback6, self.callback7, self.callback8, 
-                     self.callback9, self.callback10]
-
-        return random.choice(callbacks)
-
-    # Define 10 different callback functions
-    def callback1(self, instance):
-        pass
-
-    def callback2(self, instance):
-        pass
+if __name__ == '__main__':
+    Math24Solver().run()
