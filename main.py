@@ -23,5 +23,11 @@ class Math24Solver(App):
 
         return layout
 
+    def evaluate_expression(self, expr):
+        try:
+            return eval(expr) == 24
+        except ZeroDivisionError:
+            return False
+
 if __name__ == '__main__':
     Math24Solver().run()
