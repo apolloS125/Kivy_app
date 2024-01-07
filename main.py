@@ -5,6 +5,16 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from itertools import permutations, product
 
+class StartMenu(App):
+    def build(self):
+        layout = GridLayout(cols=1)
+        start_button = Button(text='Start game', on_press=self.go_to_game)
+        layout.add_widget(start_button)
+        return layout
+
+    def go_to_game(self, instance):
+        Math24Solver().run()
+
 class Math24Solver(App):
     def build(self):
         self.numbers_input = []
@@ -50,4 +60,4 @@ class Math24Solver(App):
             self.solution_label.text = "Please enter 4 valid numbers."
 
 if __name__ == '__main__':
-    Math24Solver().run()
+    StartMenu().run()
