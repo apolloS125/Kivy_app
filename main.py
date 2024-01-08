@@ -9,17 +9,21 @@ class StartMenu(App):
     def build(self):
         layout = GridLayout(cols=1)
         start_button = Button(text='Start game', on_press=self.go_to_game)
+        start_button2 = Button(text='Start game2', on_press=self.go_to_game2)
+        layout.add_widget(start_button2)
         layout.add_widget(start_button)
         return layout
 
     def go_to_game(self, instance):
         Math24Solver().run()
 
+    def go_to_game2(self, instance):
+        Math24Solver().run()
+
 class Math24Solver(App):
     def build(self):
         self.numbers_input = []
-        self.solution_label = Label(text="Enter 4 numbers and press 'Solve' to find a solution for 24.")
-
+        self.solution_label = Label(text="Enter 4 numbers")       
         layout = GridLayout(cols=3)
         layout.add_widget(self.solution_label)
 
@@ -30,8 +34,13 @@ class Math24Solver(App):
 
         solve_button = Button(text='Solve', on_press=self.solve)
         layout.add_widget(solve_button)
+        exit_button = Button(text='Exit', on_press=self.exit)
+        layout.add_widget(exit_button)
 
         return layout
+
+    def exit(self, instance):
+        App.get_running_app().stop()
 
     def evaluate_expression(self, expr):
         try:
@@ -57,7 +66,7 @@ class Math24Solver(App):
             else:
                 self.solution_label.text = "No solution found for 24."
         else:
-            self.solution_label.text = "Please enter 4 valid numbers."
+            self.solution_label.text = "Please enter 4 valid numbers."   
 
 if __name__ == '__main__':
     StartMenu().run()
