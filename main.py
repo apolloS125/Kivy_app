@@ -6,7 +6,7 @@ from kivy.uix.label import Label
 from itertools import permutations, product
 
 class StartMenu(App):
-    def build(self):
+    def build(self):#layout zone
         layout = GridLayout(cols=1)
         
         start_button = Button(text='Start game', on_press=self.go_to_game)
@@ -30,7 +30,7 @@ class StartMenu(App):
 class Math24Solver(App):
     def build(self):
         self.numbers_input = []
-        self.solution_label = Label(text="Enter 4 numbers")       
+        self.solution_label = Label(text="Enter 4 numbers")      
         layout = GridLayout(cols=3)
         layout.add_widget(self.solution_label)
 
@@ -41,13 +41,13 @@ class Math24Solver(App):
 
         solve_button = Button(text='Solve', on_press=self.solve)
         layout.add_widget(solve_button)
-        exit_button = Button(text='Exit', on_press=self.exit)
+        exit_button = Button(text='Exit a game', on_press=self.exit)
         layout.add_widget(exit_button)
 
         return layout
 
     def exit(self, instance):
-        StartMenu().run
+        App.get_running_app().stop()
 
     def evaluate_expression(self, expr):
         try:
