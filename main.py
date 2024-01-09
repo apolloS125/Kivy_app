@@ -8,10 +8,17 @@ from itertools import permutations, product
 class StartMenu(App):
     def build(self):
         layout = GridLayout(cols=1)
+        
         start_button = Button(text='Start game', on_press=self.go_to_game)
         start_button2 = Button(text='Start game2', on_press=self.go_to_game2)
-        layout.add_widget(start_button2)
+        
         layout.add_widget(start_button)
+        layout.add_widget(start_button2)
+        
+        names_input = TextInput(hint_text="Enter your Name")
+        self.name_input = names_input
+        
+        layout.add_widget(names_input)
         return layout
 
     def go_to_game(self, instance):
@@ -19,7 +26,7 @@ class StartMenu(App):
 
     def go_to_game2(self, instance):
         Math24Solver().run()
-
+    
 class Math24Solver(App):
     def build(self):
         self.numbers_input = []
@@ -40,7 +47,7 @@ class Math24Solver(App):
         return layout
 
     def exit(self, instance):
-        App.get_running_app().stop()
+        StartMenu().run
 
     def evaluate_expression(self, expr):
         try:
