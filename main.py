@@ -91,6 +91,12 @@ class NumberPuzzleGame(FloatLayout):
     solved_puzzles = 1
     unsolved_puzzles = 1360
 
+    def update_time(self, dt):
+        self.time_left -= 1
+        self.time_label.text = "Time: " + str(self.time_left)
+        if self.time_left <= 0:
+            # Handle game over
+            pass
 
 class PuzzleGameApp(App):
     def build(self):
