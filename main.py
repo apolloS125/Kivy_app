@@ -1,18 +1,17 @@
 from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty, StringProperty
-from kivy.clock import Clock
-from kivy.uix.button import Button
-from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 from itertools import permutations, product
 
-class StartMenu(App):
-    def build(self):
-        layout = BoxLayout(orientation='vertical')  # Vertical BoxLayout
+class StartMenu(Screen):
+    def __init__(self, **kwargs):
+        super(StartMenu, self).__init__(**kwargs)
+        
+        layout = BoxLayout(orientation='vertical')
         
         start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game)
         start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2)
@@ -20,22 +19,25 @@ class StartMenu(App):
         layout.add_widget(start_button)
         layout.add_widget(start_button2)
         
-        names_input = TextInput(hint_text="Enter your Name",multiline=False)
+        names_input = TextInput(hint_text="Enter your Name", multiline=False)
         self.name_input = names_input
         layout.add_widget(names_input)
 
         self.button3 = Button(text="Summit")
         layout.add_widget(self.button3)
-        return layout
-    
+        
+        self.add_widget(layout)
+
     def go_to_game(self, instance):
-        Math24Solver().run()
+        self.manager.current = 'math24_solver'
 
     def go_to_game2(self, instance):
-        PuzzleGameApp().run()
-    
-class Math24Solver(App):
-    def build(self):
+        self.manager.current = 'puzzle_game'
+
+class Math24Solver(Screen):
+    def __init__(self, **kwargs):
+        super(Math24Solver, self).__init__(**kwargs)
+
         self.numbers_input = []
         self.solution_label = Label(text="Enter 4 numbers")      
         layout = GridLayout(cols=3)
@@ -51,10 +53,10 @@ class Math24Solver(App):
         exit_button = Button(text='Exit a game', on_press=self.exit)
         layout.add_widget(exit_button)
 
-        return layout
+        self.add_widget(layout)
 
     def exit(self, instance):
-        App.get_running_app().stop()
+        StartMenu().run
 
     def evaluate_expression(self, expr):
         try:
@@ -82,25 +84,18 @@ class Math24Solver(App):
         else:
             self.solution_label.text = "Please enter 4 valid numbers." 
 
-class NumberPuzzleGame(FloatLayout):
-    numbers = [11, 4, 6, 5]
-    operators = ["+", "-"]
-    target_number = 24
-    time_left = 30
-    score = 30
-    solved_puzzles = 1
-    unsolved_puzzles = 1360
+class PuzzleGame(Screen):
+    def __init__(self, **kwargs):
+        super(PuzzleGame, self).__init__(**kwargs)
+        # Your NumberPuzzleGame implementation goes here
 
-    def update_time(self, dt):
-        self.time_left -= 1
-        self.time_label.text = "Time: " + str(self.time_left)
-        if self.time_left <= 0:
-            # Handle game over
-            pass
-
-class PuzzleGameApp(App):
+class MyApp(App):
     def build(self):
-        return NumberPuzzleGame()  
+        sm = ScreenManager()
+        sm.add_widget(StartMenu(name='start_menu'))
+        sm.add_widget(Math24Solver(name='math24_solver'))
+        sm.add_widget(PuzzleGame(name='puzzle_game'))
+        return sm
 
 if __name__ == '__main__':
-    StartMenu().run()
+    MyApp().run()
