@@ -91,52 +91,6 @@ class NumberPuzzleGame(FloatLayout):
     solved_puzzles = 1
     unsolved_puzzles = 1360
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        grid_layout = GridLayout(cols=2, spacing=10)
-        self.add_widget(grid_layout)
-
-        for number in self.numbers:
-            label = Label(text=str(number), font_size=40)
-            grid_layout.add_widget(label)
-
-        # Box Layout for game info (target, score, time)
-        info_layout = GridLayout(cols=1, spacing=10, size_hint=(None, None), size=(150, 200))
-        info_layout.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
-        self.add_widget(info_layout)
-
-        self.target_label = Label(text="Target: " + str(self.target_number), font_size=30)
-        info_layout.add_widget(self.target_label)
-
-        self.score_label = Label(text="Score: " + str(self.score), font_size=25)
-        info_layout.add_widget(self.score_label)
-
-        self.time_label = Label(text="Time: " + str(self.time_left), font_size=25)
-        info_layout.add_widget(self.time_label)
-
-        # Box Layout for operator buttons
-        button_box = GridLayout(cols=2, spacing=10, size_hint=(None, None), size=(200, 50))
-        button_box.pos_hint = {'center_x': 0.5, 'bottom': 0}
-        self.add_widget(button_box)
-
-        for operator in self.operators:
-            button = Button(text=operator, font_size=30)
-            button.bind(on_press=self.handle_operator)
-            button_box.add_widget(button)
-
-        # Start the game clock
-        Clock.schedule_interval(self.update_time, 1)
-
-    def handle_operator(self, button):
-        pass
-
-    def update_time(self, dt):
-        self.time_left -= 1
-        self.time_label.text = "Time: " + str(self.time_left)
-        if self.time_left <= 0:
-            # Handle game over
-            pass
 
 class PuzzleGameApp(App):
     def build(self):
