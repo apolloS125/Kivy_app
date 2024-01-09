@@ -1,13 +1,14 @@
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from itertools import permutations, product
 
 class StartMenu(App):
-    def build(self):#layout zone
-        layout = GridLayout(cols=1)
+    def build(self):
+        layout = BoxLayout(orientation='vertical')  # Vertical BoxLayout
         
         start_button = Button(text='Start game', on_press=self.go_to_game)
         start_button2 = Button(text='Start game2', on_press=self.go_to_game2)
@@ -20,6 +21,7 @@ class StartMenu(App):
         
         layout.add_widget(names_input)
         return layout
+
 
     def go_to_game(self, instance):
         Math24Solver().run()
@@ -54,6 +56,8 @@ class Math24Solver(App):
             return eval(expr) == 24
         except ZeroDivisionError:
             return False
+        
+    #----------function zone----------    
 
     def find_24_solutions(self, numbers):
         operators = ['+', '-', '*', '/']
