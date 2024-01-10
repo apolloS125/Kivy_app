@@ -1,5 +1,7 @@
 from kivy.app import App
+import random
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.properties import StringProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -13,9 +15,11 @@ class StartMenu(Screen):
         
         layout = BoxLayout(orientation='vertical')
         
+        self.greeting = Label(text = 'Welcome ')
         start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game)
         start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2)
         
+        layout.add_widget(self.greeting)
         layout.add_widget(start_button)
         layout.add_widget(start_button2)
         
@@ -23,7 +27,7 @@ class StartMenu(Screen):
         self.name_input = names_input
         layout.add_widget(names_input)
 
-        self.button3 = Button(text="Summit")
+        self.button3 = Button(text="Summit",on_press = self.callback)
         layout.add_widget(self.button3)
         
         self.add_widget(layout)
@@ -33,6 +37,9 @@ class StartMenu(Screen):
 
     def go_to_game2(self, instance):
         self.manager.current = 'puzzle_game'
+
+    def callback(self, instance):
+        self.greeting.text = 'Welcome' + ' ' + self.name_input.text
 
 class Math24Solver(Screen):
     def __init__(self, **kwargs):
@@ -56,7 +63,7 @@ class Math24Solver(Screen):
         self.add_widget(layout)
 
     def exit(self, instance):
-        StartMenu().run
+        self.manager.current = 'start_menu'
 
     def evaluate_expression(self, expr):
         try:
@@ -87,7 +94,7 @@ class Math24Solver(Screen):
 class PuzzleGame(Screen):
     def __init__(self, **kwargs):
         super(PuzzleGame, self).__init__(**kwargs)
-        
+
 
 class MyApp(App):
     def build(self):
