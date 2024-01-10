@@ -88,13 +88,6 @@ class PuzzleGame(Screen):
     def __init__(self, **kwargs):
         super(PuzzleGame, self).__init__(**kwargs)
         
-    def update_time(self, dt):
-        self.time_left -= 1
-        self.time_label.text = "Time: " + str(self.time_left)
-        if self.time_left <= 0:
-            # Handle game over
-            pass
-
 
 class MyApp(App):
     def build(self):

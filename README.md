@@ -5,14 +5,14 @@ This application offers two games: Math24 Solver and a Number Puzzle Game. It pr
 ## Features
   ### Math24 Solver
 
-    - Enter four numbers and find an arithmetic expression that equates to 24.
-    - Solve the puzzle using addition, subtraction, multiplication, and division.
+  - Enter four numbers and find an arithmetic expression that equates to 24.
+  - Solve the puzzle using addition, subtraction, multiplication, and division.
 
 ## Installation
   ### Dependencies
 
-    - Ensure you have Python installed on your system.
-    - Install Kivy using pip:
+  - Ensure you have Python installed on your system.
+  - Install Kivy using pip:
   
 ```Copy code
 pip install kivy
