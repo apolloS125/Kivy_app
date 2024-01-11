@@ -178,7 +178,11 @@ class PuzzleGame(Screen):
         pass
 
     def next_puzzle(self):
-        pass
+        self.solved_puzzles += 1
+        self.unsolved_puzzles -= 1
+        self.score_label.text = "Score: " + str(self.score)
+        self.solution_label.text = ""
+        self.time_left = 30
 
     def update_time(self, dt):
         if self.time_left > 0:
