@@ -164,7 +164,12 @@ class PuzzleGame(Screen):
         pass
 
     def handle_done(self, instance):
-        pass
+        if self.check_solution():
+            self.score += 10
+            self.next_puzzle()
+        else:
+            self.show_incorrect_popup()
+            
     def show_incorrect_popup(self):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
