@@ -8,20 +8,21 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from itertools import permutations, product
+from kivy.uix.popup import Popup
+from kivy.clock import Clock
 
 class StartMenu(Screen):
     def __init__(self, **kwargs):
         super(StartMenu, self).__init__(**kwargs)
         
         layout = BoxLayout(orientation='vertical')
-        
         self.greeting = Label(text = 'Welcome ')
-        start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game)
-        start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2)
+        self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game,font_size=40)
+        self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2,font_size=40)
         
         layout.add_widget(self.greeting)
-        layout.add_widget(start_button)
-        layout.add_widget(start_button2)
+        layout.add_widget(self.start_button)
+        layout.add_widget(self.start_button2)
         
         names_input = TextInput(hint_text="Enter your Name", multiline=False)
         self.name_input = names_input
@@ -95,6 +96,122 @@ class PuzzleGame(Screen):
     def __init__(self, **kwargs):
         super(PuzzleGame, self).__init__(**kwargs)
 
+        self.operators = ["+", "-", "*", "/"]
+        self.target_number = 24
+        self.time_left = 30
+        self.score = 0
+        self.solved_puzzles = 1
+        self.unsolved_puzzles = 1360
+        self.layout = GridLayout(cols=4)
+        self.number_labels = []
+
+        # Generate initial set of random numbers
+        self.generate_random_numbers()
+
+        for number in self.numbers:
+            label = Button(text=str(number), font_size=40, on_press=self.handle_number)
+            self.layout.add_widget(label)
+            self.number_labels.append(label)
+
+        self.target_label = Label(text="Target: " + str(self.target_number), font_size=30)
+        self.layout.add_widget(self.target_label)
+
+        self.score_label = Label(text="Score: " + str(self.score), font_size=25)
+        self.layout.add_widget(self.score_label)
+
+        self.time_label = Label(text="Time: " + str(self.time_left), font_size=25)
+        self.layout.add_widget(self.time_label)
+
+        # Buttons for operators and actions
+        grid = GridLayout(cols=2)
+        for operator in self.operators:
+            button = Button(text=operator, font_size=30, on_press=self.handle_operator)
+            grid.add_widget(button)
+        self.layout.add_widget(grid)
+
+        self.solution_label = Label(text="Enter 4 numbers")
+        skip_button = Button(text="SKIP", font_size=30, on_press=self.handle_skip)
+        done_button = Button(text="DONE", font_size=30, on_press=self.handle_done)
+        exit_button = Button(text='Exit a game', on_press=self.exit)
+
+        self.layout.add_widget(exit_button)
+        self.layout.add_widget(skip_button)
+        self.layout.add_widget(done_button)
+        self.layout.add_widget(self.solution_label)
+
+        Clock.schedule_interval(self.update_time, 1)
+
+        self.add_widget(self.layout)
+
+    def handle_number(self, instance):
+        # Handle the number button press
+        number = instance.text
+        current_text = self.solution_label.text
+        if current_text == "Enter 4 numbers":
+            current_text = ""
+        self.solution_label.text = current_text + number
+
+    def handle_operator(self, instance):
+        # Handle the operator button press
+        operator = instance.text
+        current_text = self.solution_label.text
+        self.solution_label.text = current_text + operator
+
+    def handle_skip(self, instance):
+        self.generate_random_numbers()
+        self.update_number_labels()
+        self.next_puzzle()
+
+    def generate_random_numbers(self):
+        # Generate a new set of random numbers
+        self.numbers = [random.randint(1, 10) for _ in range(4)]
+
+    def update_number_labels(self):
+        # Update the labels with the new set of numbers
+        for label, number in zip(self.number_labels, self.numbers):
+            label.text = str(number)
+
+    def handle_done(self, instance):
+        if self.check_solution():
+            self.score += 10
+            self.next_puzzle()
+        else:
+            self.show_incorrect_popup()
+
+    def show_incorrect_popup(self):
+        popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
+        popup.open()
+
+    def check_solution(self):
+        try:
+            result = eval(self.solution_label.text)
+            return result == self.target_number
+        except:
+            return False
+
+    def next_puzzle(self):
+        self.solved_puzzles += 1
+        self.unsolved_puzzles -= 1
+        self.score_label.text = "Score: " + str(self.score)
+        self.solution_label.text = ""
+        self.time_left = 30
+
+    def update_time(self, dt):
+        if self.time_left > 0:
+            self.time_left -= 1
+            self.time_label.text = f"Time: {self.time_left}"
+        else:
+            self.time_left = 30
+            self.show_game_over_popup()
+
+    def show_game_over_popup(self):
+        popup = Popup(title='Game Over', content=Label(text='Your final score is ' + str(self.score)),
+                      size_hint=(None, None), size=(400, 200))
+        self.score = 0
+        popup.open()
+
+    def exit(self, instance):
+        self.manager.current = 'start_menu'
 
 class MyApp(App):
     def build(self):

@@ -7,7 +7,11 @@ This application offers two games: Math24 Solver and a Number Puzzle Game. It pr
 
   - Enter four numbers and find an arithmetic expression that equates to 24.
   - Solve the puzzle using addition, subtraction, multiplication, and division.
+  ### Puzzlegame
 
+  - it give you random 4 number for slove to 24
+  - you have time only 30 sec for sloving
+  
 ## Installation
   ### Dependencies
 
