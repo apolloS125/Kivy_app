@@ -38,6 +38,7 @@ class StartMenu(Screen):
 
     def go_to_game2(self, instance):
         self.manager.current = 'puzzle_game'
+        PuzzleGame.is_game_started = True
 
     def callback(self, instance):
         self.greeting.text = 'Welcome' + ' ' + self.name_input.text
@@ -107,6 +108,7 @@ class PuzzleGame(Screen):
 
         # Generate initial set of random numbers
         self.generate_random_numbers()
+        self.is_game_started = False
 
         for number in self.numbers:
             label = Button(text=str(number), font_size=40, on_press=self.handle_number)
@@ -157,6 +159,10 @@ class PuzzleGame(Screen):
         self.solution_label.text = current_text + operator
 
     def handle_skip(self, instance):
+        if not self.is_game_started:
+            self.is_game_started = True
+            Clock.schedule_interval(self.update_time, 1)
+
         self.generate_random_numbers()
         self.update_number_labels()
         self.next_puzzle()
@@ -194,12 +200,15 @@ class PuzzleGame(Screen):
         self.time_left = 30
 
     def update_time(self, dt):
-        if self.time_left > 0:
-            self.time_left -= 1
-            self.time_label.text = f"Time: {self.time_left}"
+        if self.is_game_started == False:
+            pass
         else:
-            self.time_left = 30
-            self.show_game_over_popup()
+            if self.time_left > 0:
+                self.time_left -= 1
+                self.time_label.text = f"Time: {self.time_left}"
+            else:
+                self.time_left = 30
+                self.show_game_over_popup()
             
 
     def show_game_over_popup(self):
@@ -209,6 +218,7 @@ class PuzzleGame(Screen):
 
     def exit(self, instance):
         self.manager.current = 'start_menu'
+        self.is_game_started = False
 
 class MyApp(App):
     def build(self):
