@@ -152,63 +152,34 @@ class PuzzleGame(Screen):
         self.solution_label.text = current_text + number
 
     def handle_operator(self, instance):
-        # Handle the operator button press
-        operator = instance.text
-        current_text = self.solution_label.text
-        self.solution_label.text = current_text + operator
+        pass
 
     def handle_skip(self, instance):
-        self.generate_random_numbers()
-        self.update_number_labels()
-        self.next_puzzle()
+        pass
 
     def generate_random_numbers(self):
-        # Generate a new set of random numbers
-        self.numbers = [random.randint(1, 10) for _ in range(4)]
+        pass
 
     def update_number_labels(self):
-        # Update the labels with the new set of numbers
-        for label, number in zip(self.number_labels, self.numbers):
-            label.text = str(number)
+        pass
 
     def handle_done(self, instance):
-        if self.check_solution():
-            self.score += 10
-            self.next_puzzle()
-        else:
-            self.show_incorrect_popup()
-
+        pass
     def show_incorrect_popup(self):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
 
     def check_solution(self):
-        try:
-            result = eval(self.solution_label.text)
-            return result == self.target_number
-        except:
-            return False
+        pass
 
     def next_puzzle(self):
-        self.solved_puzzles += 1
-        self.unsolved_puzzles -= 1
-        self.score_label.text = "Score: " + str(self.score)
-        self.solution_label.text = ""
-        self.time_left = 30
+        pass
 
     def update_time(self, dt):
-        if self.time_left > 0:
-            self.time_left -= 1
-            self.time_label.text = f"Time: {self.time_left}"
-        else:
-            self.time_left = 30
-            self.show_game_over_popup()
+        pass
 
     def show_game_over_popup(self):
-        popup = Popup(title='Game Over', content=Label(text='Your final score is ' + str(self.score)),
-                      size_hint=(None, None), size=(400, 200))
-        self.score = 0
-        popup.open()
+        pass
 
     def exit(self, instance):
         self.manager.current = 'start_menu'
