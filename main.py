@@ -140,8 +140,8 @@ class PuzzleGame(Screen):
         self.layout.add_widget(skip_button)
         self.layout.add_widget(done_button)
         self.layout.add_widget(self.solution_label)
-
-        Clock.schedule_interval(self.update_time, 1)
+        if self.is_game_started == True:
+            Clock.schedule_interval(self.update_time, 1)
 
         self.add_widget(self.layout)
 
@@ -200,15 +200,14 @@ class PuzzleGame(Screen):
         self.time_left = 30
 
     def update_time(self, dt):
-        if self.is_game_started == False:
-            pass
+        
+        if self.time_left > 0:
+            self.time_left -= 1
+            self.time_label.text = f"Time: {self.time_left}"
         else:
-            if self.time_left > 0:
-                self.time_left -= 1
-                self.time_label.text = f"Time: {self.time_left}"
-            else:
-                self.time_left = 30
-                self.show_game_over_popup()
+            self.is_game_started = False
+            self.time_left = 30
+            self.show_game_over_popup()
             
 
     def show_game_over_popup(self):
@@ -217,8 +216,8 @@ class PuzzleGame(Screen):
         popup.open()
 
     def exit(self, instance):
-        self.manager.current = 'start_menu'
         self.is_game_started = False
+        self.manager.current = 'start_menu'
 
 class MyApp(App):
     def build(self):
