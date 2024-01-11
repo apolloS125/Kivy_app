@@ -176,10 +176,18 @@ class PuzzleGame(Screen):
         pass
 
     def update_time(self, dt):
-        pass
+        if self.time_left > 0:
+            self.time_left -= 1
+            self.time_label.text = f"Time: {self.time_left}"
+        else:
+            self.time_left = 30
+            self.show_game_over_popup()
+            
 
     def show_game_over_popup(self):
-        pass
+        popup = Popup(title='Game Over', content=Label(text='Your final score is ' + str(self.score)),size_hint=(None, None), size=(400, 200))
+        self.score = 0
+        popup.open()
 
     def exit(self, instance):
         self.manager.current = 'start_menu'
