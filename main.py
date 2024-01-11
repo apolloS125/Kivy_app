@@ -152,7 +152,9 @@ class PuzzleGame(Screen):
         self.solution_label.text = current_text + number
 
     def handle_operator(self, instance):
-        pass
+        operator = instance.text
+        current_text = self.solution_label.text
+        self.solution_label.text = current_text + operator
 
     def handle_skip(self, instance):
         pass
