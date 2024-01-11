@@ -158,7 +158,7 @@ class PuzzleGame(Screen):
         pass
 
     def generate_random_numbers(self):
-        pass
+        self.numbers = [random.randint(1, 10) for _ in range(4)]
 
     def update_number_labels(self):
         pass
@@ -169,7 +169,7 @@ class PuzzleGame(Screen):
             self.next_puzzle()
         else:
             self.show_incorrect_popup()
-            
+
     def show_incorrect_popup(self):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
