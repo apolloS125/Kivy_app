@@ -175,7 +175,11 @@ class PuzzleGame(Screen):
         popup.open()
 
     def check_solution(self):
-        pass
+        try:
+            result = eval(self.solution_label.text)
+            return result == self.target_number
+        except:
+            return False
 
     def next_puzzle(self):
         self.solved_puzzles += 1
