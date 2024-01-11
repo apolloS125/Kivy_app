@@ -157,13 +157,16 @@ class PuzzleGame(Screen):
         self.solution_label.text = current_text + operator
 
     def handle_skip(self, instance):
-        pass
+        self.generate_random_numbers()
+        self.update_number_labels()
+        self.next_puzzle()
 
     def generate_random_numbers(self):
         self.numbers = [random.randint(1, 10) for _ in range(4)]
 
     def update_number_labels(self):
-        pass
+        for label, number in zip(self.number_labels, self.numbers):
+            label.text = str(number)
 
     def handle_done(self, instance):
         if self.check_solution():
