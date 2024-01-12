@@ -14,22 +14,18 @@ class StartMenu(Screen):
     def __init__(self, **kwargs):
         super(StartMenu, self).__init__(**kwargs)
         
-        layout = BoxLayout(orientation='vertical')
-        self.greeting = Label(text='Welcome ')
-        self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game, font_size=40)
-        self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2, font_size=40)
-        
-        self.greeting.pis_hint = {"top": 1}
+        layout = BoxLayout(orientation='vertical', spacing=10, padding=20)  # Added spacing and padding
+        self.greeting = Label(text='Welcome', font_size=40, color=(0, 0.7, 1, 1))  # Changed font size and color
+        self.name_input = TextInput(hint_text="Enter your Name", multiline=False, font_size=20, size_hint=(None, None), size=(300, 50))  # Adjusted size and font size
+        self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game, font_size=30, background_color=(0, 1, 0, 1))  # Changed font size and color
+        self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2, font_size=30, background_color=(1, 0, 0, 1))  # Changed font size and color
+        self.submit_button = Button(text="Submit", on_press=self.callback, font_size=25, background_color=(0, 0.5, 0.5, 1))  # Changed font size and color
+
         layout.add_widget(self.greeting)
+        layout.add_widget(self.name_input)
         layout.add_widget(self.start_button)
         layout.add_widget(self.start_button2)
-        
-        names_input = TextInput(hint_text="Enter your Name", multiline=False)
-        self.name_input = names_input
-        layout.add_widget(self.name_input)
-
-        self.button3 = Button(text="Summit", on_press=self.callback)
-        layout.add_widget(self.button3)
+        layout.add_widget(self.submit_button)
         
         self.add_widget(layout)
 
@@ -37,7 +33,6 @@ class StartMenu(Screen):
         self.manager.current = 'math24_solver'
 
     def go_to_game2(self, instance):
-        PuzzleGame.is_game_started = True
         self.manager.current = 'difficulty'
 
     def callback(self, instance):
@@ -47,18 +42,19 @@ class Math24Solver(Screen):
     def __init__(self, **kwargs):
         super(Math24Solver, self).__init__(**kwargs)
         self.numbers_input = []
-        self.solution_label = Label(text="Enter 4 numbers")      
-        layout = BoxLayout(orientation='vertical')
+        self.solution_label = Label(text="Enter 4 numbers", font_size=25, color=(0, 0.7, 1, 1))  # Changed font size and color
+        layout = BoxLayout(orientation='vertical', spacing=10, padding=20)  # Added spacing and padding
         layout.add_widget(self.solution_label)
 
         for _ in range(4):
-            number_input = TextInput(hint_text='Number')
+            number_input = TextInput(hint_text='Number', font_size=20, size_hint=(None, None), size=(300, 150))  # Adjusted size and font size
             self.numbers_input.append(number_input)
             layout.add_widget(number_input)
 
-        solve_button = Button(text='Solve', on_press=self.solve, size_hint_y=None, height=50)
+        solve_button = Button(text='Solve', on_press=self.solve, size_hint_y=None, height=100, font_size=20, background_color=(0, 1, 0, 1))  # Changed font size and color
+        exit_button = Button(text='Exit a game', on_press=self.exit, size_hint_y=None, height=100, font_size=20, background_color=(1, 0, 0, 1))  # Changed font size and color
+
         layout.add_widget(solve_button)
-        exit_button = Button(text='Exit a game', on_press=self.exit, size_hint_y=None, height=50)
         layout.add_widget(exit_button)
 
         self.add_widget(layout)
@@ -91,7 +87,7 @@ class Math24Solver(Screen):
             else:
                 self.solution_label.text = "No solution found for 24."
         else:
-            self.solution_label.text = "Please enter 4 valid numbers." 
+            self.solution_label.text = "Please enter 4 valid numbers."  
 
 class PuzzleGame(Screen):
     is_game_started = False
@@ -112,35 +108,35 @@ class PuzzleGame(Screen):
         self.solved_puzzles = 1
         self.unsolved_puzzles = 1360
 
-        self.layout = GridLayout(cols=4)
+        self.layout = GridLayout(cols=4, spacing=10, padding=20)  # Added spacing and padding
         self.number_labels = []
 
         self.generate_random_numbers()
 
         for number in self.numbers:
-            label = Button(text=str(number), font_size=30, on_press=self.handle_number)
+            label = Button(text=str(number), font_size=30, on_press=self.handle_number, background_color=(0.6, 0.6, 0.6, 1))  # Changed background color
             self.layout.add_widget(label)
             self.number_labels.append(label)
 
-        self.target_label = Label(text=f"Target: {self.target_number}", font_size=30)
+        self.target_label = Label(text=f"Target: {self.target_number}", font_size=30, color=(1, 0.7, 0.7, 1))  # Changed font size and color
         self.layout.add_widget(self.target_label)
 
-        self.score_label = Label(text=f"Score: {self.score}", font_size=25)
+        self.score_label = Label(text=f"Score: {self.score}", font_size=25, color=(0.7, 1, 0.7, 1))  # Changed font size and color
         self.layout.add_widget(self.score_label)
 
-        self.time_label = Label(text=f"Time: {self.time_left}", font_size=25)
+        self.time_label = Label(text=f"Time: {self.time_left}", font_size=25, color=(0.7, 0.7, 1, 1))  # Changed font size and color
         self.layout.add_widget(self.time_label)
 
-        operators_grid = GridLayout(cols=2)
+        operators_grid = GridLayout(cols=2, spacing=10)  # Added spacing
         for operator in self.operators:
-            button = Button(text=operator, font_size=30, on_press=self.handle_operator)
+            button = Button(text=operator, font_size=30, on_press=self.handle_operator, background_color=(0.8, 0.8, 0.8, 1))  # Changed background color
             operators_grid.add_widget(button)
         self.layout.add_widget(operators_grid)
 
-        exit_button = Button(text='Exit a game', on_press=self.exit)
-        skip_button = Button(text="START/SKIP", font_size=30, on_press=self.handle_skip)
-        done_button = Button(text="DONE", font_size=30, on_press=self.handle_done)
-        self.solution_label = Label(text="Calculate here", font_size=20)
+        exit_button = Button(text='Exit a game', on_press=self.exit, font_size=20, background_color=(0.8, 0.2, 0.2, 1))  # Changed font size and background color
+        skip_button = Button(text="START/SKIP", font_size=20, on_press=self.handle_skip, background_color=(0.2, 0.8, 0.2, 1))  # Changed font size and background color
+        done_button = Button(text="DONE", font_size=20, on_press=self.handle_done, background_color=(0.2, 0.2, 0.8, 1))  # Changed font size and background color
+        self.solution_label = Label(text="Calculate here", font_size=20, color=(0.8, 0.8, 0.8, 1))  # Changed font size and color
 
         self.layout.add_widget(exit_button)
         self.layout.add_widget(skip_button)
@@ -158,7 +154,7 @@ class PuzzleGame(Screen):
             current_text = ""
         self.solution_label.text = current_text + number
         button.text = ""
-        button.background_color = [0, 1, 0, 1]
+        button.background_color = [0.7, 0.7, 1, 1]  # Changed background color
 
     #for call operator
     def handle_operator(self, operator_button):
@@ -170,7 +166,7 @@ class PuzzleGame(Screen):
         self.is_game_started = True
         self.update_number_labels()
         self.next_puzzle()
-        # skip_button.background_color = [1, 1, 1, 1]
+        #skip_button.background_color = [1, 1, 1, 1]
 
     #for gennumber and regennumber
     def generate_random_numbers(self):
@@ -235,25 +231,24 @@ class PuzzleGame(Screen):
         self.is_game_started = False
         self.manager.current = 'start_menu'
 
-class select_Difficulty(Screen):
+class SelectDifficulty(Screen):
     def __init__(self, **kwargs):
-        super(select_Difficulty, self).__init__(**kwargs)
+        super(SelectDifficulty, self).__init__(**kwargs)
 
-        layout = GridLayout(cols=1)
+        layout = GridLayout(cols=1, spacing=10, padding=20)  # Added spacing and padding
 
-        label = Label(text="Select Difficulty", font_size=30)
+        label = Label(text="Select Difficulty", font_size=30, color=(0, 0.7, 1, 1))  # Changed font size and color
         
-        easy_button = Button(text="Easy", on_press=self.set_difficulty_easy)
-        medium_button = Button(text="Medium", on_press=self.set_difficulty_normal)
-        hard_button = Button(text="Hard", on_press=self.set_difficulty_hard)
-        exit_button = Button(text='Back to menu', on_press=self.exit)
+        easy_button = Button(text="Easy", on_press=self.set_difficulty_easy, font_size=20, background_color=(0, 1, 0, 1))  # Changed font size and color
+        medium_button = Button(text="Medium", on_press=self.set_difficulty_normal, font_size=20, background_color=(1, 1, 0, 1))  # Changed font size and color
+        hard_button = Button(text="Hard", on_press=self.set_difficulty_hard, font_size=20, background_color=(1, 0, 0, 1))  # Changed font size and color
+        exit_button = Button(text='Back to menu', on_press=self.exit, font_size=20, background_color=(0, 0, 0, 1))  # Changed font size and color
 
         layout.add_widget(label)
         layout.add_widget(easy_button)
         layout.add_widget(medium_button)
         layout.add_widget(hard_button)
         layout.add_widget(exit_button)
-
         self.add_widget(layout)
     
     def set_difficulty_easy(self, instance):
@@ -276,8 +271,8 @@ class select_Difficulty(Screen):
 
     def set_difficulty_hard(self, instance):
         # Set the range of numbers between 1 - 100 and the range of the target to be 1 - 100
-        PuzzleGame.number_range = (1, 51)
-        PuzzleGame.target_range = (1, 100)
+        PuzzleGame.number_range = (10, 51)
+        PuzzleGame.target_range = (20, 100)
         
         PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Hard"
@@ -290,7 +285,7 @@ class MyApp(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(StartMenu(name='start_menu'))
-        sm.add_widget(select_Difficulty(name='difficulty'))
+        sm.add_widget(SelectDifficulty(name='difficulty'))
         sm.add_widget(Math24Solver(name='math24_solver'))
         sm.add_widget(PuzzleGame(name='puzzle_game'))
         return sm
