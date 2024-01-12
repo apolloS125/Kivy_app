@@ -210,14 +210,14 @@ class PuzzleGame(Screen):
         self.unsolved_puzzles -= 1
         self.score_label.text = f"Score: {self.score}"
         self.solution_label.text = ""
-        self.time_left = 30
+        self.time_left = 60
 
     def update_time(self, dt):
         if self.is_game_started and self.time_left > 0:
             self.time_left -= dt  # Decrement by elapsed time
             self.time_label.text = f"Time: {int(self.time_left)}"  # Display as integer seconds
         elif self.is_game_started:
-            self.time_left = 30
+            self.time_left =60
             self.is_game_started = False
             self.show_game_over_popup()
     

@@ -52,11 +52,15 @@ This is a simple Kivy app that includes two math-related games: Math24 Solver an
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/apolloS125/Kivy_app/assets/100780943/0aeab369-6634-4635-8cbb-85455314d121.png)
-![Screenshot 2](https://github.com/apolloS125/Kivy_app/assets/100780943/f94a10a5-5a8f-4ac9-a9d4-c7b23e874b97.png)
-![Screenshot 3](https://github.com/apolloS125/Kivy_app/assets/100780943/daf0d35f-de13-498b-874b-99e854be802f.png)
-![Screenshot 4](https://github.com/apolloS125/Kivy_app/assets/100780943/ded55a77-5473-4afa-beb1-62d7c579fe61.png)
+<div align="center">
+    <img src="https://github.com/apolloS125/Kivy_app/assets/100780943/0aeab369-6634-4635-8cbb-85455314d121.png" alt="Screenshot 1" width="400"/>
+    <img src="https://github.com/apolloS125/Kivy_app/assets/100780943/f94a10a5-5a8f-4ac9-a9d4-c7b23e874b97.png" alt="Screenshot 2" width="400"/>
+</div>
 
+<div align="center">
+    <img src="https://github.com/apolloS125/Kivy_app/assets/100780943/daf0d35f-de13-498b-874b-99e854be802f.png" alt="Screenshot 3" width="400"/>
+    <img src="https://github.com/apolloS125/Kivy_app/assets/100780943/ded55a77-5473-4afa-beb1-62d7c579fe61.png" alt="Screenshot 4" width="400"/>
+</div>
 
 
 
