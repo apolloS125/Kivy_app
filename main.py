@@ -1,7 +1,6 @@
 from kivy.app import App
 import random
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import StringProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -16,20 +15,20 @@ class StartMenu(Screen):
         super(StartMenu, self).__init__(**kwargs)
         
         layout = BoxLayout(orientation='vertical')
-        self.greeting = Label(text = 'Welcome ')
-        self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game,font_size=40)
-        self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2,font_size=40)
+        self.greeting = Label(text='Welcome ')
+        self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game, font_size=40)
+        self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2, font_size=40)
         
-        self.greeting.pis_hint = {"top":1}
+        self.greeting.pis_hint = {"top": 1}
         layout.add_widget(self.greeting)
         layout.add_widget(self.start_button)
         layout.add_widget(self.start_button2)
         
         names_input = TextInput(hint_text="Enter your Name", multiline=False)
         self.name_input = names_input
-        layout.add_widget(names_input)
+        layout.add_widget(self.name_input)
 
-        self.button3 = Button(text="Summit",on_press = self.callback)
+        self.button3 = Button(text="Summit", on_press=self.callback)
         layout.add_widget(self.button3)
         
         self.add_widget(layout)
@@ -67,7 +66,7 @@ class Math24Solver(Screen):
     def exit(self, instance):
         self.manager.current = 'start_menu'
     
-    def evaluate_expression(self, expr):#haldle error
+    def evaluate_expression(self, expr):
         try:
             return eval(expr) == 24
         except ZeroDivisionError:
@@ -94,19 +93,23 @@ class Math24Solver(Screen):
             self.solution_label.text = "Please enter 4 valid numbers." 
 
 class PuzzleGame(Screen):
+    is_game_started = False
+    difficulty_level = "Easy"
+    number_range = (0, 0)  # Initialize with default values
+    target_range = (0, 0)  # Initialize with default values
+
     def __init__(self, **kwargs):
         super(PuzzleGame, self).__init__(**kwargs)
         self.initialize_game()
 
     def initialize_game(self):
         self.operators = ["+", "-", "*", "/", "(", ")"]
-        self.numbers = [0,0,0,0]
-        self.target_number = random.randint(1, 100)
+        self.numbers = [0, 0, 0, 0]
+        self.target_number = 0
         self.time_left = 30
         self.score = 0
         self.solved_puzzles = 1
         self.unsolved_puzzles = 1360
-        self.is_game_started = False
 
         self.layout = GridLayout(cols=4)
         self.number_labels = []
@@ -165,20 +168,18 @@ class PuzzleGame(Screen):
         self.is_game_started = True
         self.update_number_labels()
         self.next_puzzle()
-        #skip_button.background_color = [1, 1, 1, 1]
-    
-    #gen_number
+        # skip_button.background_color = [1, 1, 1, 1]
+
     def generate_random_numbers(self):
-        self.numbers = [random.randint(1, 50) for _ in range(4)]
+        self.numbers = [random.randint(*self.number_range) for _ in range(4)]
         self.update_number_labels()
 
     def update_number_labels(self):
         for label, number in zip(self.number_labels, self.numbers):
             label.text = str(number)
 
-    #random target        
     def update_target(self):
-        self.target_number = random.randint(1, 100)
+        self.target_number = random.randint(*self.target_range)
         self.target_label.text = f"Target: {self.target_number}"
 
     def handle_done(self, done_button):
@@ -191,8 +192,7 @@ class PuzzleGame(Screen):
     def show_incorrect_popup(self):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
-    
-    #timer
+
     def check_solution(self):
         try:
             result = eval(self.solution_label.text)
@@ -210,7 +210,7 @@ class PuzzleGame(Screen):
         self.score_label.text = f"Score: {self.score}"
         self.solution_label.text = ""
         self.time_left = 30
-        
+
     def update_time(self, dt):
         if self.is_game_started and self.time_left > 0:
             self.time_left -= dt  # Decrement by elapsed time
@@ -238,7 +238,7 @@ class select_Difficulty(Screen):
         label = Label(text="Select Difficulty", font_size=30)
         
         easy_button = Button(text="Easy", on_press=self.set_difficulty_easy)
-        medium_button = Button(text="Medium", on_press=self.set_difficulty_nomal)
+        medium_button = Button(text="Medium", on_press=self.set_difficulty_normal)
         hard_button = Button(text="Hard", on_press=self.set_difficulty_hard)
         exit_button = Button(text='Back to menu', on_press=self.exit)
 
@@ -250,14 +250,32 @@ class select_Difficulty(Screen):
 
         self.add_widget(layout)
     
-    def set_difficulty_easy(self,instance):
+    def set_difficulty_easy(self, instance):
+        # Set the range of numbers between 1 - 10 and the range of the target to be 1 - 10
+        PuzzleGame.number_range = (1, 10)
+        PuzzleGame.target_range = (1, 30)
+        
+        PuzzleGame.is_game_started = True
+        PuzzleGame.difficulty_level = "Easy"
         self.manager.current = 'puzzle_game'
 
-    def set_difficulty_nomal(self,instance):
-        pass
+    def set_difficulty_normal(self, instance):
+        # Set the range of numbers between 1 - 50 and the range of the target to be 1 - 50
+        PuzzleGame.number_range = (1, 20)
+        PuzzleGame.target_range = (1, 50)
+        
+        PuzzleGame.is_game_started = True
+        PuzzleGame.difficulty_level = "Medium"
+        self.manager.current = 'puzzle_game'
 
-    def set_difficulty_hard(self,instance):
-        pass
+    def set_difficulty_hard(self, instance):
+        # Set the range of numbers between 1 - 100 and the range of the target to be 1 - 100
+        PuzzleGame.number_range = (1, 50)
+        PuzzleGame.target_range = (1, 100)
+        
+        PuzzleGame.is_game_started = True
+        PuzzleGame.difficulty_level = "Hard"
+        self.manager.current = 'puzzle_game'
 
     def exit(self, exit_button):
         self.manager.current = 'start_menu'
