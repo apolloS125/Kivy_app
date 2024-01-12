@@ -66,6 +66,7 @@ class Math24Solver(Screen):
     def exit(self, instance):
         self.manager.current = 'start_menu'
     
+    #for check ans
     def evaluate_expression(self, expr):
         try:
             return eval(expr) == 24
@@ -95,8 +96,8 @@ class Math24Solver(Screen):
 class PuzzleGame(Screen):
     is_game_started = False
     difficulty_level = "Easy"
-    number_range = (0, 0)  # Initialize with default values
-    target_range = (0, 0)  # Initialize with default values
+    number_range = (0, 0)
+    target_range = (0, 0)
 
     def __init__(self, **kwargs):
         super(PuzzleGame, self).__init__(**kwargs)
@@ -159,6 +160,7 @@ class PuzzleGame(Screen):
         button.text = ""
         button.background_color = [0, 1, 0, 1]
 
+    #for call operator
     def handle_operator(self, operator_button):
         operator = operator_button.text
         current_text = self.solution_label.text
@@ -170,6 +172,7 @@ class PuzzleGame(Screen):
         self.next_puzzle()
         # skip_button.background_color = [1, 1, 1, 1]
 
+    #for gennumber and regennumber
     def generate_random_numbers(self):
         self.numbers = [random.randint(*self.number_range) for _ in range(4)]
         self.update_number_labels()
@@ -193,6 +196,7 @@ class PuzzleGame(Screen):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
 
+    #for done button
     def check_solution(self):
         try:
             result = eval(self.solution_label.text)
@@ -202,6 +206,7 @@ class PuzzleGame(Screen):
         except:
             return False
 
+    #for skip and done button
     def next_puzzle(self):
         self.generate_random_numbers()
         self.update_target()
@@ -219,7 +224,8 @@ class PuzzleGame(Screen):
             self.time_left = 30
             self.is_game_started = False
             self.show_game_over_popup()
-
+    
+    #show score when game over
     def show_game_over_popup(self):
         popup = Popup(title='Game Over', content=Label(text=f'Your final score is {self.score}'), size_hint=(None, None), size=(400, 200))
         self.score = 0
@@ -252,8 +258,8 @@ class select_Difficulty(Screen):
     
     def set_difficulty_easy(self, instance):
         # Set the range of numbers between 1 - 10 and the range of the target to be 1 - 10
-        PuzzleGame.number_range = (1, 10)
-        PuzzleGame.target_range = (1, 30)
+        PuzzleGame.number_range = (1, 11)
+        PuzzleGame.target_range = (1, 31)
         
         PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Easy"
@@ -261,8 +267,8 @@ class select_Difficulty(Screen):
 
     def set_difficulty_normal(self, instance):
         # Set the range of numbers between 1 - 50 and the range of the target to be 1 - 50
-        PuzzleGame.number_range = (1, 20)
-        PuzzleGame.target_range = (1, 50)
+        PuzzleGame.number_range = (1, 21)
+        PuzzleGame.target_range = (1, 51)
         
         PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Medium"
@@ -270,7 +276,7 @@ class select_Difficulty(Screen):
 
     def set_difficulty_hard(self, instance):
         # Set the range of numbers between 1 - 100 and the range of the target to be 1 - 100
-        PuzzleGame.number_range = (1, 50)
+        PuzzleGame.number_range = (1, 51)
         PuzzleGame.target_range = (1, 100)
         
         PuzzleGame.is_game_started = True
