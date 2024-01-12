@@ -102,7 +102,7 @@ class PuzzleGame(Screen):
     def initialize_game(self):
         self.operators = ["+", "-", "*", "/", "(", ")"]
         self.numbers = [0,0,0,0]
-        self.target_number = 24
+        self.target_number = random.randint(1, 100)
         self.time_left = 30
         self.score = 0
         self.solved_puzzles = 1
@@ -163,15 +163,19 @@ class PuzzleGame(Screen):
     def handle_skip(self, skip_button):
         self.is_game_started = True
         self.update_number_labels()
+        self.update_target()
         self.next_puzzle()
         self.generate_random_numbers()
 
     def generate_random_numbers(self):
-        self.numbers = [random.randint(1, 10) for _ in range(4)]
+        self.numbers = [random.randint(1, 50) for _ in range(4)]
 
     def update_number_labels(self):
         for label, number in zip(self.number_labels, self.numbers):
             label.text = str(number)
+    def update_target(self):
+        self.target_number = random.randint(1, 100)
+        self.target_label.text = f"Target: {self.target_number}"
 
     def handle_done(self, done_button):
         if self.check_solution():
