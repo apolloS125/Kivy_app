@@ -250,13 +250,13 @@ class select_Difficulty(Screen):
 
         self.add_widget(layout)
     
-    def set_difficulty_easy(self):
+    def set_difficulty_easy(self,instance):
+        self.manager.current = 'puzzle_game'
+
+    def set_difficulty_nomal(self,instance):
         pass
 
-    def set_difficulty_nomal(self):
-        pass
-
-    def set_difficulty_hard(self):
+    def set_difficulty_hard(self,instance):
         pass
 
     def exit(self, exit_button):
