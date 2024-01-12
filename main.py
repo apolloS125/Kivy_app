@@ -1,5 +1,6 @@
 from kivy.app import App
 import random
+import math
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -100,7 +101,7 @@ class PuzzleGame(Screen):
         self.initialize_game()
 
     def initialize_game(self):
-        self.operators = ["+", "-", "*", "/", "(", ")"]
+        self.operators = ["+", "-", "*", "/", "(", ")", "√", "!"]
         self.numbers = [0, 0, 0, 0]
         self.target_number = 0
         self.time_left = 30
@@ -108,35 +109,36 @@ class PuzzleGame(Screen):
         self.solved_puzzles = 1
         self.unsolved_puzzles = 1360
 
-        self.layout = GridLayout(cols=4, spacing=10, padding=20)  # Added spacing and padding
+        self.layout = GridLayout(cols=4, spacing=10, padding=20)
         self.number_labels = []
 
         self.generate_random_numbers()
 
         for number in self.numbers:
-            label = Button(text=str(number), font_size=30, on_press=self.handle_number, background_color=(0.6, 0.6, 0.6, 1))  # Changed background color
+            label = Button(text=str(number), font_size=30, on_press=self.handle_number, background_color=(0.6, 0.6, 0.6, 1))
             self.layout.add_widget(label)
             self.number_labels.append(label)
 
-        self.target_label = Label(text=f"Target: {self.target_number}", font_size=30, color=(1, 0.7, 0.7, 1))  # Changed font size and color
+        self.target_label = Label(text=f"Target: {self.target_number}", font_size=30, color=(1, 0.7, 0.7, 1))
         self.layout.add_widget(self.target_label)
 
-        self.score_label = Label(text=f"Score: {self.score}", font_size=25, color=(0.7, 1, 0.7, 1))  # Changed font size and color
+        self.score_label = Label(text=f"Score: {self.score}", font_size=25, color=(0.7, 1, 0.7, 1))
         self.layout.add_widget(self.score_label)
 
-        self.time_label = Label(text=f"Time: {self.time_left}", font_size=25, color=(0.7, 0.7, 1, 1))  # Changed font size and color
+        self.time_label = Label(text=f"Time: {self.time_left}", font_size=25, color=(0.7, 0.7, 1, 1))
         self.layout.add_widget(self.time_label)
 
-        operators_grid = GridLayout(cols=2, spacing=10)  # Added spacing
+        operators_grid = GridLayout(cols=4, spacing=10)
         for operator in self.operators:
-            button = Button(text=operator, font_size=30, on_press=self.handle_operator, background_color=(0.8, 0.8, 0.8, 1))  # Changed background color
+            button = Button(text=operator, font_size=30, on_press=self.handle_operator, background_color=(0.8, 0.8, 0.8, 1))
             operators_grid.add_widget(button)
+
         self.layout.add_widget(operators_grid)
 
-        exit_button = Button(text='Exit a game', on_press=self.exit, font_size=20, background_color=(0.8, 0.2, 0.2, 1))  # Changed font size and background color
-        skip_button = Button(text="START/SKIP", font_size=20, on_press=self.handle_skip, background_color=(0.2, 0.8, 0.2, 1))  # Changed font size and background color
-        done_button = Button(text="DONE", font_size=20, on_press=self.handle_done, background_color=(0.2, 0.2, 0.8, 1))  # Changed font size and background color
-        self.solution_label = Label(text="Calculate here", font_size=20, color=(0.8, 0.8, 0.8, 1))  # Changed font size and color
+        exit_button = Button(text='Exit a game', on_press=self.exit, font_size=20, background_color=(0.8, 0.2, 0.2, 1))
+        skip_button = Button(text="START/SKIP", font_size=20, on_press=self.handle_skip, background_color=(0.2, 0.8, 0.2, 1))
+        done_button = Button(text="DONE", font_size=20, on_press=self.handle_done, background_color=(0.2, 0.2, 0.8, 1))
+        self.solution_label = Label(text="Calculate here", font_size=20, color=(0.8, 0.8, 0.8, 1))
 
         self.layout.add_widget(exit_button)
         self.layout.add_widget(skip_button)
@@ -154,21 +156,37 @@ class PuzzleGame(Screen):
             current_text = ""
         self.solution_label.text = current_text + number
         button.text = ""
-        button.background_color = [0.7, 0.7, 1, 1]  # Changed background color
+        button.background_color = [0.7, 0.7, 1, 1]
 
-    #for call operator
     def handle_operator(self, operator_button):
         operator = operator_button.text
         current_text = self.solution_label.text
-        self.solution_label.text = current_text + operator
+
+        # Check for special operators
+        if operator in ["+", "-", "*", "/", "(", ")"]:
+            # Handle basic operators as before
+            self.solution_label.text = current_text + operator
+        elif operator == "√":  # Square root operator
+            # Add the square root symbol to the solution label
+            self.solution_label.text = current_text + "sqrt("
+        elif operator == "!":  # Factorial operator
+            # Add the factorial symbol to the solution label
+            self.solution_label.text = current_text + "factorial("
+
+    def factorial(self, n):
+        if n == 0 or n == 1:
+            return 1
+        else:
+            return n * self.factorial(n - 1)
+
+    def square_root(self, x):
+        return math.sqrt(x)
 
     def handle_skip(self, skip_button):
         self.is_game_started = True
         self.update_number_labels()
         self.next_puzzle()
-        #skip_button.background_color = [1, 1, 1, 1]
 
-    #for gennumber and regennumber
     def generate_random_numbers(self):
         self.numbers = [random.randint(*self.number_range) for _ in range(4)]
         self.update_number_labels()
@@ -192,17 +210,15 @@ class PuzzleGame(Screen):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
 
-    #for done button
     def check_solution(self):
         try:
-            result = eval(self.solution_label.text)
+            result = eval(self.solution_label.text.replace("sqrt", "self.square_root").replace("factorial", "self.factorial"))
             return result == self.target_number
         except ZeroDivisionError:
             return False
         except:
             return False
 
-    #for skip and done button
     def next_puzzle(self):
         self.generate_random_numbers()
         self.update_target()
@@ -214,14 +230,13 @@ class PuzzleGame(Screen):
 
     def update_time(self, dt):
         if self.is_game_started and self.time_left > 0:
-            self.time_left -= dt  # Decrement by elapsed time
-            self.time_label.text = f"Time: {int(self.time_left)}"  # Display as integer seconds
+            self.time_left -= dt
+            self.time_label.text = f"Time: {int(self.time_left)}"
         elif self.is_game_started:
-            self.time_left =60
+            self.time_left = 60
             self.is_game_started = False
             self.show_game_over_popup()
-    
-    #show score when game over
+
     def show_game_over_popup(self):
         popup = Popup(title='Game Over', content=Label(text=f'Your final score is {self.score}'), size_hint=(None, None), size=(400, 200))
         self.score = 0
