@@ -39,7 +39,7 @@ class StartMenu(Screen):
 
     def go_to_game2(self, instance):
         PuzzleGame.is_game_started = True
-        self.manager.current = 'puzzle_game'
+        self.manager.current = 'difficulty'
 
     def callback(self, instance):
         self.greeting.text = 'Welcome' + ' ' + self.name_input.text
@@ -153,9 +153,8 @@ class PuzzleGame(Screen):
         if current_text == "Calculate here":
             current_text = ""
         self.solution_label.text = current_text + number
-
-        # Reset the number on the button to 0
         button.text = ""
+        button.background_color = [0, 1, 0, 1]
 
     def handle_operator(self, operator_button):
         operator = operator_button.text
@@ -166,7 +165,7 @@ class PuzzleGame(Screen):
         self.is_game_started = True
         self.update_number_labels()
         self.next_puzzle()
-        #self.generate_random_numbers()
+        #skip_button.background_color = [1, 1, 1, 1]
     
     #gen_number
     def generate_random_numbers(self):
@@ -212,7 +211,6 @@ class PuzzleGame(Screen):
         self.solution_label.text = ""
         self.time_left = 30
         
-
     def update_time(self, dt):
         if self.is_game_started and self.time_left > 0:
             self.time_left -= dt  # Decrement by elapsed time
@@ -231,10 +229,33 @@ class PuzzleGame(Screen):
         self.is_game_started = False
         self.manager.current = 'start_menu'
 
+class select_Difficulty(Screen):
+    def __init__(self, **kwargs):
+        super(select_Difficulty, self).__init__(**kwargs)
+
+        layout = GridLayout(cols=1)
+
+        label = Label(text="Select Difficulty", font_size=30)
+        
+        easy_button = Button(text="Easy", on_press=self.set_difficulty)
+        medium_button = Button(text="Medium", on_press=self.set_difficulty)
+        hard_button = Button(text="Hard", on_press=self.set_difficulty)
+
+        layout.add_widget(label)
+        layout.add_widget(easy_button)
+        layout.add_widget(medium_button)
+        layout.add_widget(hard_button)
+
+        self.add_widget(layout)
+    
+    def set_difficulty(self):
+        pass
+
 class MyApp(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(StartMenu(name='start_menu'))
+        sm.add_widget(select_Difficulty(name='difficulty'))
         sm.add_widget(Math24Solver(name='math24_solver'))
         sm.add_widget(PuzzleGame(name='puzzle_game'))
         return sm
