@@ -101,6 +101,7 @@ class PuzzleGame(Screen):
 
     def initialize_game(self):
         self.operators = ["+", "-", "*", "/", "(", ")"]
+        self.numbers = [0,0,0,0]
         self.target_number = 24
         self.time_left = 30
         self.score = 0
@@ -163,6 +164,7 @@ class PuzzleGame(Screen):
         self.is_game_started = True
         self.update_number_labels()
         self.next_puzzle()
+        self.generate_random_numbers()
 
     def generate_random_numbers(self):
         self.numbers = [random.randint(1, 10) for _ in range(4)]
@@ -173,6 +175,7 @@ class PuzzleGame(Screen):
 
     def handle_done(self, done_button):
         if self.check_solution():
+            self.generate_random_numbers()
             self.score += 10
             self.next_puzzle()
         else:
@@ -197,7 +200,7 @@ class PuzzleGame(Screen):
         self.score_label.text = f"Score: {self.score}"
         self.solution_label.text = ""
         self.time_left = 30
-        self.generate_random_numbers()
+        
 
     def update_time(self, dt):
         if self.is_game_started and self.time_left > 0:
@@ -205,6 +208,7 @@ class PuzzleGame(Screen):
             self.time_label.text = f"Time: {int(self.time_left)}"  # Display as integer seconds
         elif self.is_game_started:
             self.time_left = 30
+            self.is_game_started = False
             self.show_game_over_popup()
 
     def show_game_over_popup(self):
