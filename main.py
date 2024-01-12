@@ -20,6 +20,7 @@ class StartMenu(Screen):
         self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game,font_size=40)
         self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2,font_size=40)
         
+        self.greeting.pis_hint = {"top":1}
         layout.add_widget(self.greeting)
         layout.add_widget(self.start_button)
         layout.add_widget(self.start_button2)
@@ -97,7 +98,7 @@ class PuzzleGame(Screen):
     def __init__(self, **kwargs):
         super(PuzzleGame, self).__init__(**kwargs)
 
-        self.operators = ["+", "-", "*", "/"]
+        self.operators = ["+", "-", "*", "/","(",")"]
         self.target_number = 24
         self.time_left = 30
         self.score = 0
@@ -163,7 +164,6 @@ class PuzzleGame(Screen):
             self.is_game_started = True
             Clock.schedule_interval(self.update_time, 1)
 
-        self.generate_random_numbers()
         self.update_number_labels()
         self.next_puzzle()
 
@@ -198,6 +198,7 @@ class PuzzleGame(Screen):
         self.score_label.text = "Score: " + str(self.score)
         self.solution_label.text = ""
         self.time_left = 30
+        self.generate_random_numbers()
 
     def update_time(self, dt):
         
