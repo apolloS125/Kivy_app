@@ -33,10 +33,3 @@ Include screenshots or GIFs showcasing different aspects of your app.
 
 - Kivy: [Kivy Official Site](https://kivy.org/)
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- Thanks to Kivy for providing a powerful framework for building multi-touch applications.
