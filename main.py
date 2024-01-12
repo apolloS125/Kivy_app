@@ -47,7 +47,6 @@ class StartMenu(Screen):
 class Math24Solver(Screen):
     def __init__(self, **kwargs):
         super(Math24Solver, self).__init__(**kwargs)
-
         self.numbers_input = []
         self.solution_label = Label(text="Enter 4 numbers")      
         layout = BoxLayout(orientation='vertical')
@@ -67,8 +66,8 @@ class Math24Solver(Screen):
 
     def exit(self, instance):
         self.manager.current = 'start_menu'
-
-    def evaluate_expression(self, expr):
+    
+    def evaluate_expression(self, expr):#haldle error
         try:
             return eval(expr) == 24
         except ZeroDivisionError:
@@ -155,6 +154,9 @@ class PuzzleGame(Screen):
             current_text = ""
         self.solution_label.text = current_text + number
 
+        # Reset the number on the button to 0
+        button.text = ""
+
     def handle_operator(self, operator_button):
         operator = operator_button.text
         current_text = self.solution_label.text
@@ -166,13 +168,16 @@ class PuzzleGame(Screen):
         self.update_target()
         self.next_puzzle()
         self.generate_random_numbers()
-
+    
+    #gen_number
     def generate_random_numbers(self):
         self.numbers = [random.randint(1, 50) for _ in range(4)]
 
     def update_number_labels(self):
         for label, number in zip(self.number_labels, self.numbers):
             label.text = str(number)
+
+    #random target        
     def update_target(self):
         self.target_number = random.randint(1, 100)
         self.target_label.text = f"Target: {self.target_number}"
@@ -188,7 +193,8 @@ class PuzzleGame(Screen):
     def show_incorrect_popup(self):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
-
+    
+    #timer
     def check_solution(self):
         try:
             result = eval(self.solution_label.text)
