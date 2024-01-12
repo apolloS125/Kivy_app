@@ -168,7 +168,7 @@ class PuzzleGame(Screen):
             self.solution_label.text = current_text + operator
         elif operator == "√":  # Square root operator
             # Add the square root symbol to the solution label
-            self.solution_label.text = current_text + "sqrt("
+            self.solution_label.text = current_text + "√("
         elif operator == "!":  # Factorial operator
             # Add the factorial symbol to the solution label
             self.solution_label.text = current_text + "factorial("

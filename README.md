@@ -16,18 +16,20 @@ This is a simple Kivy app that includes two math-related games: Math24 Solver an
 
 ## Getting Started
 
-## Getting Started
-
 1. **Install virtual environment (venv):**
 
     ```bash
     # Create a virtual environment
     python -m venv venv
+    ```
 
     # Activate the virtual environment
     # On Windows
+    ```
     venv\Scripts\activate
+    ```
     # On macOS/Linux
+    ```
     source venv/bin/activate
     ```
 
