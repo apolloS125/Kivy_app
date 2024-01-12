@@ -38,8 +38,8 @@ class StartMenu(Screen):
         self.manager.current = 'math24_solver'
 
     def go_to_game2(self, instance):
-        self.manager.current = 'puzzle_game'
         PuzzleGame.is_game_started = True
+        self.manager.current = 'puzzle_game'
 
     def callback(self, instance):
         self.greeting.text = 'Welcome' + ' ' + self.name_input.text
@@ -50,17 +50,17 @@ class Math24Solver(Screen):
 
         self.numbers_input = []
         self.solution_label = Label(text="Enter 4 numbers")      
-        layout = GridLayout(cols=3)
+        layout = BoxLayout(orientation='vertical')
         layout.add_widget(self.solution_label)
 
-        for i in range(4):
+        for _ in range(4):
             number_input = TextInput(hint_text='Number')
             self.numbers_input.append(number_input)
             layout.add_widget(number_input)
 
-        solve_button = Button(text='Solve', on_press=self.solve)
+        solve_button = Button(text='Solve', on_press=self.solve, size_hint_y=None, height=50)
         layout.add_widget(solve_button)
-        exit_button = Button(text='Exit a game', on_press=self.exit)
+        exit_button = Button(text='Exit a game', on_press=self.exit, size_hint_y=None, height=50)
         layout.add_widget(exit_button)
 
         self.add_widget(layout)
@@ -97,73 +97,70 @@ class Math24Solver(Screen):
 class PuzzleGame(Screen):
     def __init__(self, **kwargs):
         super(PuzzleGame, self).__init__(**kwargs)
+        self.initialize_game()
 
-        self.operators = ["+", "-", "*", "/","(",")"]
+    def initialize_game(self):
+        self.operators = ["+", "-", "*", "/", "(", ")"]
         self.target_number = 24
         self.time_left = 30
         self.score = 0
         self.solved_puzzles = 1
         self.unsolved_puzzles = 1360
+        self.is_game_started = False
+
         self.layout = GridLayout(cols=4)
         self.number_labels = []
 
-        # Generate initial set of random numbers
         self.generate_random_numbers()
-        self.is_game_started = False
 
         for number in self.numbers:
-            label = Button(text=str(number), font_size=40, on_press=self.handle_number)
+            label = Button(text=str(number), font_size=30, on_press=self.handle_number)
             self.layout.add_widget(label)
             self.number_labels.append(label)
 
-        self.target_label = Label(text="Target: " + str(self.target_number), font_size=30)
+        self.target_label = Label(text=f"Target: {self.target_number}", font_size=30)
         self.layout.add_widget(self.target_label)
 
-        self.score_label = Label(text="Score: " + str(self.score), font_size=25)
+        self.score_label = Label(text=f"Score: {self.score}", font_size=25)
         self.layout.add_widget(self.score_label)
 
-        self.time_label = Label(text="Time: " + str(self.time_left), font_size=25)
+        self.time_label = Label(text=f"Time: {self.time_left}", font_size=25)
         self.layout.add_widget(self.time_label)
 
-        # Buttons for operators and actions
-        grid = GridLayout(cols=2)
+        operators_grid = GridLayout(cols=2)
         for operator in self.operators:
             button = Button(text=operator, font_size=30, on_press=self.handle_operator)
-            grid.add_widget(button)
-        self.layout.add_widget(grid)
+            operators_grid.add_widget(button)
+        self.layout.add_widget(operators_grid)
 
-        self.solution_label = Label(text="Enter 4 numbers")
-        skip_button = Button(text="SKIP", font_size=30, on_press=self.handle_skip)
-        done_button = Button(text="DONE", font_size=30, on_press=self.handle_done)
         exit_button = Button(text='Exit a game', on_press=self.exit)
+        skip_button = Button(text="START/SKIP", font_size=30, on_press=self.handle_skip)
+        done_button = Button(text="DONE", font_size=30, on_press=self.handle_done)
+        self.solution_label = Label(text="Enter 4 numbers", font_size=20)
 
         self.layout.add_widget(exit_button)
         self.layout.add_widget(skip_button)
         self.layout.add_widget(done_button)
         self.layout.add_widget(self.solution_label)
-        if self.is_game_started == True:
-            Clock.schedule_interval(self.update_time, 1)
+
+        Clock.schedule_interval(self.update_time, 1 if self.is_game_started else 0)
 
         self.add_widget(self.layout)
 
-    def handle_number(self, instance):
-        # Handle the number button press
-        number = instance.text
+    def handle_number(self, button):
+        number = button.text
         current_text = self.solution_label.text
         if current_text == "Enter 4 numbers":
             current_text = ""
         self.solution_label.text = current_text + number
 
-    def handle_operator(self, instance):
-        operator = instance.text
+    def handle_operator(self, operator_button):
+        operator = operator_button.text
         current_text = self.solution_label.text
         self.solution_label.text = current_text + operator
 
-    def handle_skip(self, instance):
-        if not self.is_game_started:
-            self.is_game_started = True
-            Clock.schedule_interval(self.update_time, 1)
-
+    def handle_skip(self, skip_button):
+        self.is_game_started = True
         self.update_number_labels()
         self.next_puzzle()
 
@@ -174,7 +171,7 @@ class PuzzleGame(Screen):
         for label, number in zip(self.number_labels, self.numbers):
             label.text = str(number)
 
-    def handle_done(self, instance):
+    def handle_done(self, done_button):
         if self.check_solution():
             self.score += 10
             self.next_puzzle()
@@ -189,34 +186,33 @@ class PuzzleGame(Screen):
         try:
             result = eval(self.solution_label.text)
             return result == self.target_number
+        except ZeroDivisionError:
+            return False
         except:
             return False
 
     def next_puzzle(self):
         self.solved_puzzles += 1
         self.unsolved_puzzles -= 1
-        self.score_label.text = "Score: " + str(self.score)
+        self.score_label.text = f"Score: {self.score}"
         self.solution_label.text = ""
         self.time_left = 30
         self.generate_random_numbers()
 
     def update_time(self, dt):
-        
-        if self.time_left > 0:
-            self.time_left -= 1
-            self.time_label.text = f"Time: {self.time_left}"
-        else:
-            self.is_game_started = False
+        if self.is_game_started and self.time_left > 0:
+            self.time_left -= dt  # Decrement by elapsed time
+            self.time_label.text = f"Time: {int(self.time_left)}"  # Display as integer seconds
+        elif self.is_game_started:
             self.time_left = 30
             self.show_game_over_popup()
-            
 
     def show_game_over_popup(self):
-        popup = Popup(title='Game Over', content=Label(text='Your final score is ' + str(self.score)),size_hint=(None, None), size=(400, 200))
+        popup = Popup(title='Game Over', content=Label(text=f'Your final score is {self.score}'), size_hint=(None, None), size=(400, 200))
         self.score = 0
         popup.open()
 
-    def exit(self, instance):
+    def exit(self, exit_button):
         self.is_game_started = False
         self.manager.current = 'start_menu'
 
