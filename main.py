@@ -136,7 +136,7 @@ class PuzzleGame(Screen):
         exit_button = Button(text='Exit a game', on_press=self.exit)
         skip_button = Button(text="START/SKIP", font_size=30, on_press=self.handle_skip)
         done_button = Button(text="DONE", font_size=30, on_press=self.handle_done)
-        self.solution_label = Label(text="Enter 4 numbers", font_size=20)
+        self.solution_label = Label(text="Calculate here", font_size=20)
 
         self.layout.add_widget(exit_button)
         self.layout.add_widget(skip_button)
@@ -150,7 +150,7 @@ class PuzzleGame(Screen):
     def handle_number(self, button):
         number = button.text
         current_text = self.solution_label.text
-        if current_text == "Enter 4 numbers":
+        if current_text == "Calculate here":
             current_text = ""
         self.solution_label.text = current_text + number
 
@@ -165,13 +165,13 @@ class PuzzleGame(Screen):
     def handle_skip(self, skip_button):
         self.is_game_started = True
         self.update_number_labels()
-        self.update_target()
         self.next_puzzle()
-        self.generate_random_numbers()
+        #self.generate_random_numbers()
     
     #gen_number
     def generate_random_numbers(self):
         self.numbers = [random.randint(1, 50) for _ in range(4)]
+        self.update_number_labels()
 
     def update_number_labels(self):
         for label, number in zip(self.number_labels, self.numbers):
@@ -184,7 +184,6 @@ class PuzzleGame(Screen):
 
     def handle_done(self, done_button):
         if self.check_solution():
-            self.generate_random_numbers()
             self.score += 10
             self.next_puzzle()
         else:
@@ -205,6 +204,8 @@ class PuzzleGame(Screen):
             return False
 
     def next_puzzle(self):
+        self.generate_random_numbers()
+        self.update_target()
         self.solved_puzzles += 1
         self.unsolved_puzzles -= 1
         self.score_label.text = f"Score: {self.score}"
