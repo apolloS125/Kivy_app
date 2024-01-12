@@ -1,32 +1,42 @@
-# Math24 Solver and Puzzle Game
+# Math Games App
 
-This application offers two games: Math24 Solver and a Number Puzzle Game. It provides an interactive environment where users can either solve Math24 puzzles or engage in a number puzzle game.
+This is a simple Kivy app that includes two math-related games: Math24 Solver and Puzzle Game.
 
 ## Features
-  ### Math24 Solver
 
-  - Enter four numbers and find an arithmetic expression that equates to 24.
-  - Solve the puzzle using addition, subtraction, multiplication, and division.
-  ### Puzzlegame
+### Math24 Solver
+- Solve mathematical expressions to reach the target number 24.
+- Enter 4 numbers and use basic operators (+, -, *, /) to find a solution.
 
-  - it give you random 4 number for slove to 24
-  - you have time only 30 sec for sloving
-  
-## Installation
-  ### Dependencies
+### Puzzle Game
+- Test your arithmetic skills by solving puzzles.
+- Select difficulty levels: Easy, Medium, or Hard.
+- Generate random numbers and a target number, then use the provided operators to reach the target.
+- Score points for each correct solution within the time limit.
 
-  - Ensure you have Python installed on your system.
-  - Install Kivy using pip:
-  
-```Copy code
-pip install kivy
-```
-  ### Running the Application
+## Getting Started
 
-  - Clone the repository or download the source code.
-  - Navigate to the directory containing the project files.
-  - Run the StartMenu.py file:
-  
-```Copy code
-python StartMenu.py
-```
+1. Install Kivy: [Kivy Installation Guide](https://kivy.org/doc/stable/gettingstarted/installation.html)
+2. Run the app by executing the Python script:
+
+    ```bash
+    python your_app_name.py
+    ```
+
+3. Follow the on-screen instructions to navigate through the app and play the games.
+
+## Screenshots
+
+Include screenshots or GIFs showcasing different aspects of your app.
+
+## Dependencies
+
+- Kivy: [Kivy Official Site](https://kivy.org/)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- Thanks to Kivy for providing a powerful framework for building multi-touch applications.
