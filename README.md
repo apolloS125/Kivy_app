@@ -16,12 +16,37 @@ This is a simple Kivy app that includes two math-related games: Math24 Solver an
 
 ## Getting Started
 
-1. Install Kivy: [Kivy Installation Guide](https://kivy.org/doc/stable/gettingstarted/installation.html)
-2. Run the app by executing the Python script:
+## Getting Started
+
+1. **Install virtual environment (venv):**
 
     ```bash
+    # Create a virtual environment
+    python -m venv venv
+
+    # Activate the virtual environment
+    # On Windows
+    venv\Scripts\activate
+    # On macOS/Linux
+    source venv/bin/activate
+    ```
+
+2. **Install Kivy:**
+
+    ```bash
+    # Install Kivy and its dependencies
+    pip install kivy kivy_examples
+    ```
+
+3. **Run the app:**
+
+    ```bash
+    # Ensure the virtual environment is activated
+    # Run the app by executing the Python script
     python your_app_name.py
     ```
+
+4. **Follow the on-screen instructions to navigate through the app and play the games.**
 
 3. Follow the on-screen instructions to navigate through the app and play the games.
 
