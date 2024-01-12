@@ -237,19 +237,30 @@ class select_Difficulty(Screen):
 
         label = Label(text="Select Difficulty", font_size=30)
         
-        easy_button = Button(text="Easy", on_press=self.set_difficulty)
-        medium_button = Button(text="Medium", on_press=self.set_difficulty)
-        hard_button = Button(text="Hard", on_press=self.set_difficulty)
+        easy_button = Button(text="Easy", on_press=self.set_difficulty_easy)
+        medium_button = Button(text="Medium", on_press=self.set_difficulty_nomal)
+        hard_button = Button(text="Hard", on_press=self.set_difficulty_hard)
+        exit_button = Button(text='Back to menu', on_press=self.exit)
 
         layout.add_widget(label)
         layout.add_widget(easy_button)
         layout.add_widget(medium_button)
         layout.add_widget(hard_button)
+        layout.add_widget(exit_button)
 
         self.add_widget(layout)
     
-    def set_difficulty(self):
+    def set_difficulty_easy(self):
         pass
+
+    def set_difficulty_nomal(self):
+        pass
+
+    def set_difficulty_hard(self):
+        pass
+
+    def exit(self, exit_button):
+        self.manager.current = 'start_menu'
 
 class MyApp(App):
     def build(self):
