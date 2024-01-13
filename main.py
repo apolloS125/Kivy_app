@@ -204,7 +204,9 @@ class PuzzleGame(Screen):
         self.target_label.text = f"Target: {self.target_number}"
 
     def handle_done(self, done_button):
-        if self.check_solution():
+        if any(not num_btn.text for num_btn in self.number_labels):
+            self.show_incomplete_numbers_popup()
+        elif self.check_solution():
             self.score += 10
             self.time_left += 7
             self.next_puzzle()
