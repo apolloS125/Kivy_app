@@ -280,26 +280,20 @@ class SelectDifficulty(Screen):
         self.add_widget(layout)
     
     def set_difficulty_easy(self, instance):
-        # Set the range of numbers between 1 - 10 and the range of the target to be 1 - 10
         PuzzleGame.number_range = (1, 15)
         PuzzleGame.target_range = (10, 40)
-        #PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Easy"
         self.manager.current = 'puzzle_game'
 
     def set_difficulty_normal(self, instance):
-        # Set the range of numbers between 1 - 50 and the range of the target to be 1 - 50
         PuzzleGame.number_range = (1, 25)
         PuzzleGame.target_range = (40, 70)
-        #PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Medium"
         self.manager.current = 'puzzle_game'
 
     def set_difficulty_hard(self, instance):
-        # Set the range of numbers between 1 - 100 and the range of the target to be 1 - 100
         PuzzleGame.number_range = (10, 55)
         PuzzleGame.target_range = (10, 100)
-        #PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Hard"
         self.manager.current = 'puzzle_game'
 
