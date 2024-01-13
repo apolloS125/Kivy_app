@@ -158,6 +158,10 @@ class PuzzleGame(Screen):
         button.text = ""
         button.background_color = [0.7, 0.7, 1, 1]
 
+        # Check if any number button has non-empty text
+        enable_done_button = any(bool(num_btn.text) for num_btn in self.number_labels)
+        self.layout.children[-2].disabled = not enable_done_button
+
     def handle_operator(self, operator_button):
         operator = operator_button.text
         current_text = self.solution_label.text
