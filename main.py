@@ -202,7 +202,7 @@ class PuzzleGame(Screen):
     def handle_done(self, done_button):
         if self.check_solution():
             self.score += 10
-            self.time_left += 5
+            self.time_left += 7
             self.next_puzzle()
         else:
             self.show_incorrect_popup()
