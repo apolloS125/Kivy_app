@@ -17,10 +17,10 @@ class StartMenu(Screen):
         
         layout = BoxLayout(orientation='vertical', spacing=10, padding=20)  # Added spacing and padding
         self.greeting = Label(text='Welcome', font_size=40, color=(0, 0.7, 1, 1))  # Changed font size and color
-        self.name_input = TextInput(hint_text="Enter your Name", multiline=False, font_size=20, size_hint=(None, None), size=(300, 50))  # Adjusted size and font size
-        self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game, font_size=30, background_color=(0, 1, 0, 1))  # Changed font size and color
-        self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2, font_size=30, background_color=(1, 0, 0, 1))  # Changed font size and color
-        self.submit_button = Button(text="Submit", on_press=self.callback, font_size=25, background_color=(0, 0.5, 0.5, 1))  # Changed font size and color
+        self.name_input = TextInput(hint_text="Enter your Name", multiline=False, font_size=30, size_hint=(None, None), size=(300, 50))  # Adjusted size and font size
+        self.start_button = Button(text='Start Math24 Solver', on_press=self.go_to_game, font_size=40, background_color=(0, 1, 0, 1))  # Changed font size and color
+        self.start_button2 = Button(text='Start Puzzle Game', on_press=self.go_to_game2, font_size=40, background_color=(1, 0, 0, 1))  # Changed font size and color
+        self.submit_button = Button(text="Submit", on_press=self.callback, font_size=30, background_color=(0, 0.5, 0.5, 1))  # Changed font size and color
 
         layout.add_widget(self.greeting)
         layout.add_widget(self.name_input)
@@ -104,7 +104,7 @@ class PuzzleGame(Screen):
         self.operators = ["+", "-", "*", "/", "(", ")", "√", "!"]
         self.numbers = [0, 0, 0, 0]
         self.target_number = 0
-        self.time_left = 30
+        self.time_left = 60
         self.score = 0
         self.solved_puzzles = 1
         self.unsolved_puzzles = 1360
@@ -168,7 +168,7 @@ class PuzzleGame(Screen):
             self.solution_label.text = current_text + operator
         elif operator == "√":  # Square root operator
             # Add the square root symbol to the solution label
-            self.solution_label.text = current_text + "√("
+            self.solution_label.text = current_text + "sqrt("
         elif operator == "!":  # Factorial operator
             # Add the factorial symbol to the solution label
             self.solution_label.text = current_text + "factorial("
@@ -202,6 +202,7 @@ class PuzzleGame(Screen):
     def handle_done(self, done_button):
         if self.check_solution():
             self.score += 10
+            self.time_left += 5
             self.next_puzzle()
         else:
             self.show_incorrect_popup()
@@ -226,7 +227,6 @@ class PuzzleGame(Screen):
         self.unsolved_puzzles -= 1
         self.score_label.text = f"Score: {self.score}"
         self.solution_label.text = ""
-        self.time_left = 60
 
     def update_time(self, dt):
         if self.is_game_started and self.time_left > 0:
@@ -244,7 +244,7 @@ class PuzzleGame(Screen):
 
     def exit(self, exit_button):
         self.is_game_started = False
-        self.manager.current = 'start_menu'
+        self.manager.current = 'difficulty'
 
 class SelectDifficulty(Screen):
     def __init__(self, **kwargs):
@@ -254,10 +254,10 @@ class SelectDifficulty(Screen):
 
         label = Label(text="Select Difficulty", font_size=30, color=(0, 0.7, 1, 1))  # Changed font size and color
         
-        easy_button = Button(text="Easy", on_press=self.set_difficulty_easy, font_size=20, background_color=(0, 1, 0, 1))  # Changed font size and color
-        medium_button = Button(text="Medium", on_press=self.set_difficulty_normal, font_size=20, background_color=(1, 1, 0, 1))  # Changed font size and color
-        hard_button = Button(text="Hard", on_press=self.set_difficulty_hard, font_size=20, background_color=(1, 0, 0, 1))  # Changed font size and color
-        exit_button = Button(text='Back to menu', on_press=self.exit, font_size=20, background_color=(0, 0, 0, 1))  # Changed font size and color
+        easy_button = Button(text="Easy", on_press=self.set_difficulty_easy, font_size=30, background_color=(0, 1, 0, 1))  # Changed font size and color
+        medium_button = Button(text="Medium", on_press=self.set_difficulty_normal, font_size=30, background_color=(1, 1, 0, 1))  # Changed font size and color
+        hard_button = Button(text="Hard", on_press=self.set_difficulty_hard, font_size=30, background_color=(1, 0, 0, 1))  # Changed font size and color
+        exit_button = Button(text='Back to menu', on_press=self.exit, font_size=30, background_color=(0, 0, 0, 1))  # Changed font size and color
 
         layout.add_widget(label)
         layout.add_widget(easy_button)
