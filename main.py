@@ -207,6 +207,10 @@ class PuzzleGame(Screen):
         else:
             self.show_incorrect_popup()
 
+    def show_incomplete_numbers_popup(self):
+        popup = Popup(title='Incomplete Numbers', content=Label(text='Please use all numbers!'), size_hint=(None, None), size=(400, 200))
+        popup.open()
+
     def show_incorrect_popup(self):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
         popup.open()
