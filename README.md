@@ -13,6 +13,7 @@ This is a simple Kivy app that includes two math-related games: Math24 Solver an
 - Select difficulty levels: Easy, Medium, or Hard.
 - Generate random numbers and a target number, then use the provided operators to reach the target.
 - Score points for each correct solution within the time limit.
+- Enjoy
 
 ## Getting Started
 
@@ -49,8 +50,6 @@ This is a simple Kivy app that includes two math-related games: Math24 Solver an
     ```
 
 4. **Follow the on-screen instructions to navigate through the app and play the games.**
-
-3. Follow the on-screen instructions to navigate through the app and play the games.
 
 ## Screenshots
 
