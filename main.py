@@ -92,7 +92,7 @@ class Math24Solver(Screen):
 
 class PuzzleGame(Screen):
     is_game_started = False
-    difficulty_level = "Easy"
+    difficulty_level = ""
     number_range = (0, 0)
     target_range = (0, 0)
 
@@ -233,9 +233,13 @@ class PuzzleGame(Screen):
             self.time_left -= dt
             self.time_label.text = f"Time: {int(self.time_left)}"
         elif self.is_game_started:
-            self.time_left = 60
             self.is_game_started = False
             self.show_game_over_popup()
+
+    def reset_time(self):
+        self.time_left += 60
+        if self.time_left >= 60:
+            self.time_left = 60
 
     def show_game_over_popup(self):
         popup = Popup(title='Game Over', content=Label(text=f'Your final score is {self.score}'), size_hint=(None, None), size=(400, 200))
@@ -243,6 +247,7 @@ class PuzzleGame(Screen):
         popup.open()
 
     def exit(self, exit_button):
+        self.reset_time()
         self.is_game_started = False
         self.manager.current = 'difficulty'
 
@@ -270,8 +275,7 @@ class SelectDifficulty(Screen):
         # Set the range of numbers between 1 - 10 and the range of the target to be 1 - 10
         PuzzleGame.number_range = (1, 11)
         PuzzleGame.target_range = (1, 31)
-        
-        PuzzleGame.is_game_started = True
+        #PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Easy"
         self.manager.current = 'puzzle_game'
 
@@ -279,8 +283,7 @@ class SelectDifficulty(Screen):
         # Set the range of numbers between 1 - 50 and the range of the target to be 1 - 50
         PuzzleGame.number_range = (1, 21)
         PuzzleGame.target_range = (1, 51)
-        
-        PuzzleGame.is_game_started = True
+        #PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Medium"
         self.manager.current = 'puzzle_game'
 
@@ -288,8 +291,7 @@ class SelectDifficulty(Screen):
         # Set the range of numbers between 1 - 100 and the range of the target to be 1 - 100
         PuzzleGame.number_range = (10, 51)
         PuzzleGame.target_range = (20, 100)
-        
-        PuzzleGame.is_game_started = True
+        #PuzzleGame.is_game_started = True
         PuzzleGame.difficulty_level = "Hard"
         self.manager.current = 'puzzle_game'
 
