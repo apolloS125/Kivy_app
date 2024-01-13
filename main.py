@@ -104,7 +104,7 @@ class PuzzleGame(Screen):
         self.operators = ["+", "-", "*", "/", "(", ")", "√", "!"]
         self.numbers = [0, 0, 0, 0]
         self.target_number = 0
-        self.time_left = 10
+        self.time_left = 60
         self.score = 0
         self.solved_puzzles = 1
         self.unsolved_puzzles = 1360
@@ -158,9 +158,20 @@ class PuzzleGame(Screen):
         button.text = ""
         button.background_color = [0.7, 0.7, 1, 1]
 
-        # Check if any number button has non-empty text
-        enable_done_button = any(bool(num_btn.text) for num_btn in self.number_labels)
-        self.layout.children[-2].disabled = not enable_done_button
+    def handle_skip(self, skip_button):
+        self.is_game_started = True
+        self.update_number_labels()
+        self.next_puzzle()
+
+    def handle_done(self, done_button):
+        if any(num_btn.text != "" for num_btn in self.number_labels):
+            self.show_incomplete_numbers_popup()
+        elif self.check_solution():
+            self.score += 10
+            self.time_left += 7
+            self.next_puzzle()
+        else:
+            self.show_incorrect_popup()
 
     def handle_operator(self, operator_button):
         operator = operator_button.text
@@ -186,11 +197,6 @@ class PuzzleGame(Screen):
     def square_root(self, x):
         return math.sqrt(x)
 
-    def handle_skip(self, skip_button):
-        self.is_game_started = True
-        self.update_number_labels()
-        self.next_puzzle()
-
     def generate_random_numbers(self):
         self.numbers = [random.randint(*self.number_range) for _ in range(4)]
         self.update_number_labels()
@@ -203,22 +209,18 @@ class PuzzleGame(Screen):
         self.target_number = random.randint(*self.target_range)
         self.target_label.text = f"Target: {self.target_number}"
 
-    def handle_done(self, done_button):
-        if any(not num_btn.text for num_btn in self.number_labels):
-            self.show_incomplete_numbers_popup()
-        elif self.check_solution():
-            self.score += 10
-            self.time_left += 7
-            self.next_puzzle()
-        else:
-            self.show_incorrect_popup()
-
     def show_incomplete_numbers_popup(self):
         popup = Popup(title='Incomplete Numbers', content=Label(text='Please use all numbers!'), size_hint=(None, None), size=(400, 200))
         popup.open()
 
     def show_incorrect_popup(self):
         popup = Popup(title='Incorrect Solution', content=Label(text='Try again!'), size_hint=(None, None), size=(400, 200))
+        popup.open()
+
+    def show_game_over_popup(self):
+        popup = Popup(title='Game Over', content=Label(text=f'Your final score is {self.score}'), size_hint=(None, None), size=(400, 200))
+        self.score = 0
+        self.reset_time()
         popup.open()
 
     def check_solution(self):
@@ -251,12 +253,6 @@ class PuzzleGame(Screen):
         self.time_left += 60
         if self.time_left >= 60:
             self.time_left = 60
-
-    def show_game_over_popup(self):
-        popup = Popup(title='Game Over', content=Label(text=f'Your final score is {self.score}'), size_hint=(None, None), size=(400, 200))
-        self.score = 0
-        self.reset_time()
-        popup.open()
 
     def exit(self, exit_button):
         self.reset_time()
